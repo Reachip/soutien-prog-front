@@ -34,9 +34,10 @@
 </template>
 <script>
 export default {
-  props: ["title", "subject", "startAt", "endAt", "author"],
+  props: ["id", "title", "subject", "startAt", "endAt", "author"],
   methods: {
       toggleParticipationModal() {
+          this.$store.commit('modalParticipation/changeCourseSelection', this.$props.id)
           this.$store.commit('modal/toggleParticipationModal')
       }
   }  

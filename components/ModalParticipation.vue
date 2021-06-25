@@ -62,7 +62,7 @@
                   <input
                     type="text"
                     placeholder=""
-                    name=""
+                    v-model="username"
                     class="bg-gray-200 p-2 rounded my-2 min-w-full"
                   />
                 </div>
@@ -72,7 +72,7 @@
                   <input
                     type="email"
                     placeholder=""
-                    name=""
+                    v-model="email"
                     class="bg-gray-200 p-2 rounded my-2 min-w-full"
                   />
                 </div>
@@ -103,6 +103,7 @@
               sm:w-auto
               sm:text-sm
             "
+            @click="participateHandler()"
           >
             Participer au soutien
           </button>
@@ -142,9 +143,32 @@
 </template>
 <script>
 export default {
+    data: function() {
+      return {
+        username: null,
+        email: null
+      }
+    },
+
     methods: {
       changeModalPurposeVisibility() {
         this.$store.commit('modal/toggleParticipationModal')
+      },
+
+      async participateHandler() {
+        if (this.username && this.email) {
+          try {
+            await this.$axios.post("/participant/", {
+              "course": this.$store.state.modalParticipation.selectedCourse,
+              "mail": this.email,
+              "name": this.username
+            })
+
+            this.$store.commit('modal/toggleParticipationModal')
+          } catch(_) {
+            // TODO
+          } 
+        }
       }
     }
 };

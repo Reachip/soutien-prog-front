@@ -42,6 +42,7 @@
       </header>
       <div v-for="course in filteredCourses">
         <PropositionCard
+          :id=course.id
           :title=course.course_name
           :author=course.teacher
           :startAt=course.starting_at
