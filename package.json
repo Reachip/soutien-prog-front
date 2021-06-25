@@ -11,6 +11,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
     "core-js": "^3.9.1",
+    "jwt-decode": "^3.1.2",
     "nuxt": "^2.15.3",
     "nuxt-material-design-icons": "^1.0.4"
   },
