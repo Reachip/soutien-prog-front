@@ -56,7 +56,7 @@
       </header>
       <div v-for="course in this.courses">
         <PropositionCard
-          title="Cours"
+          :title=course.course_name
           :author=course.teacher
           :startAt=course.starting_at
           :endAt=course.ending_at

@@ -57,6 +57,16 @@
               </h3>
               <div class="m-4">
                 <div class="m-4">
+                  <label class="text-base">Quel nom pour ce soutien ?</label><br />
+                  <input
+                    type="text"
+                    placeholder=""
+                    name=""
+                    class="bg-gray-200 p-2 rounded my-2"
+                  />
+                </div>
+
+                <div class="m-4">
                   <label class="text-base">Pour quand ?</label><br />
                   <input
                     type="date"
@@ -91,7 +101,7 @@
                   <textarea
                     type="text"
                     class="rounded my-2 bg-gray-200 p-2"
-                    rows="3"
+                    rows="1"
                     cols="35"
                   ></textarea>
                 </div>
