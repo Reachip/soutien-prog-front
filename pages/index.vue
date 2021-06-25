@@ -68,11 +68,11 @@ export default {
     this.courses = (await this.$axios.get("/course/")).data;
     
     for (let index=0; index < this.courses.length; index++) {
-      this.courses[index].starting_at = moment(this.courses[index].starting_at, 'YYYY-MM-DDTHH:mm:ss.SSS')
-        .format('YYYY-MM-DD HH:mm')
+      this.courses[index].starting_at = 
+        moment(this.courses[index].starting_at, 'YYYY-MM-DDTHH:mm:ss.SSS').format('DD-MM-YYYY HH:mm')
 
-      this.courses[index].ending_at = moment(this.courses[index].ending_at, 'YYYY-MM-DDTHH:mm:ss.SSS')
-        .format('YYYY-MM-DD HH:mm')
+      this.courses[index].ending_at = 
+        moment(this.courses[index].ending_at, 'YYYY-MM-DDTHH:mm:ss.SSS').format('DD-MM-YYYY HH:mm')
     }
 
     this.filteredCourses = this.courses
@@ -82,23 +82,24 @@ export default {
 
   methods: {
     filterCourse() {
+      this.filteredCourses = this.courses
+
       if (this.dateInput && this.moduleInput) {
         this.filteredCourses = this.filteredCourses
-          .filter(course => course.starting_at === this.dateInput && course.school_module === this.moduleInput)
+          .filter(course => {
+            const formatedDate = moment(course.starting_at, 'DD-MM-YYYY HH:mm').format("YYYY-MM-DD")
+            return formatedDate === this.dateInput && course.school_module === this.moduleInput
+          })
       }
 
       else if (this.dateInput) {
          this.filteredCourses = this.filteredCourses
-          .filter(course => course.starting_at === this.dateInput)
+          .filter(course => moment(course.starting_at, 'DD-MM-YYYY HH:mm').format("YYYY-MM-DD") === this.dateInput)
       }
 
       else if (this.moduleInput) {
         this.filteredCourses = this.filteredCourses
           .filter(course => course.school_module === this.moduleInput)
-      }
-
-      else {
-        this.filteredCourses = this.courses
       }
     }
   },
