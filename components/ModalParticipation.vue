@@ -63,7 +63,7 @@
                     type="text"
                     placeholder=""
                     name=""
-                    class="bg-gray-200 p-2 rounded my-2"
+                    class="bg-gray-200 p-2 rounded my-2 min-w-full"
                   />
                 </div>
 
@@ -73,7 +73,7 @@
                     type="email"
                     placeholder=""
                     name=""
-                    class="bg-gray-200 p-2 rounded my-2"
+                    class="bg-gray-200 p-2 rounded my-2 min-w-full"
                   />
                 </div>
               </div>

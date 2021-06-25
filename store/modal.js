@@ -1,6 +1,7 @@
 export const state = () => ({
   purposeModalisInvisible: true,
-  participationModalisInvisible: true
+  participationModalisInvisible: true,
+  connectionModalIsInvisible: true
 })
 
 export const mutations = {
@@ -10,5 +11,9 @@ export const mutations = {
 
   toggleParticipationModal (state) {
     state.participationModalisInvisible = !state.participationModalisInvisible
+  },
+
+  toggleConnectionModal (state) {
+    state.connectionModalIsInvisible = !state.connectionModalIsInvisible
   }
 }

@@ -2,6 +2,7 @@
   <div>
     <Navbar />
     <ModalParticipation />
+    <ModalConnection />
     <ModalPurpose />
     <main>
       <header class="bg-red-700 h-64 border">
@@ -28,7 +29,7 @@
               <label class="font-bold text-xl text-white"
                 >Pour quel module ?</label
               ><br />
-              <select class="border rounded bg-gray-100 border-gray-200 p-2 my-2">
+              <select class="min-w-full border rounded bg-gray-100 border-gray-200 p-2 my-2">
                 <option v-for="module in modules">{{module.module_name}}</option>
               </select>
               
@@ -69,6 +70,12 @@
 
 <script>
 export default {
+  mounted() {
+    if (localStorage.getItem("token")) {
+      this.$store.commit('user/changeUserConnectionState')
+    }
+  },
+
   async beforeMount() {
     this.courses = (await this.$axios.get("/course/")).data;
     this.modules = (await this.$axios.get("/module/")).data;

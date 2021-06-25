@@ -82,9 +82,39 @@
                   text-white
                 "
                 aria-current="page"
+                v-show="this.$store.state.user.isConnected"
                 @click="changeModalPurposeVisibility()"
                 >Proposer un soutien</a
               >
+              <a
+                class="
+                  bg-gray-150
+                  px-3
+                  py-2
+                  rounded-md
+                  text-sm
+                  font-medium
+                  text-white
+                "
+                @click="changeConnectionModalVisibility()"
+                v-show="!this.$store.state.user.isConnected"
+                href="#"
+                >Connexion</a>
+
+                <a
+                class="
+                  bg-gray-150
+                  px-3
+                  py-2
+                  rounded-md
+                  text-sm
+                  font-medium
+                  text-white
+                "
+                @click="logout()"
+                v-show="this.$store.state.user.isConnected"
+                href="#"
+                >Deconnexion</a>
             </div>
           </div>
         </div>
@@ -95,8 +125,7 @@
         <a
           href="#"
           class="
-            bg-gray-900
-            text-white
+            text-black
             block
             px-3
             py-2
@@ -110,6 +139,7 @@
         <a
           href="#"
           id="proposer-soutien"
+          v-show="this.$store.state.user.isConnected"
           class="text-black px-3 py-2 rounded-md text-base font-medium"
           >Proposer un soutien</a
         >
@@ -119,10 +149,20 @@
 </template>
 <script>
 export default {
-    methods: {
-      changeModalPurposeVisibility() {
-        this.$store.commit('modal/togglePurposeModal')
-      }
-    }
+  methods: {
+    changeModalPurposeVisibility() {
+      this.$store.commit("modal/togglePurposeModal")
+    },
+
+    changeConnectionModalVisibility() {
+      this.$store.commit("modal/toggleConnectionModal")
+    },
+
+    logout() {
+      localStorage.removeItem("token")
+      this.$store.commit('user/changeUserConnectionState')
+      console.log("removed")
+    },
+  },
 };
 </script>
