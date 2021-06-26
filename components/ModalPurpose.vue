@@ -1,10 +1,11 @@
 <template>
+<transition name="fade">
   <div
     class="fixed z-10 inset-0 overflow-y-auto"
     aria-labelledby="modal-title"
     role="dialog"
     aria-modal="true"
-    :class="{invisible: this.$store.state.modal.purposeModalisInvisible}"
+    v-show=!this.$store.state.modal.purposeModalisInvisible
   >
     <div
       class="
@@ -168,6 +169,7 @@
       </div>
     </div>
   </div>
+  </transition>
 </template>
 <script>
 export default {
