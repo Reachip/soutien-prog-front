@@ -60,9 +60,10 @@ import moment from 'moment'
 
 export default {
   mounted() {
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("token"))
       this.$store.commit('user/changeUserConnectionState')
-    }
+
+    this.$store.commit("band/toggleBandAsInfo", "Bienvene sur la version experimental de SoutienProg. Vous pouvez organiser des cours en faisant une demande d'inscription à Rached Mejri.")
   },
 
   async beforeMount() {
