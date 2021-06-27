@@ -156,6 +156,7 @@ export default {
     logout() {
       localStorage.removeItem("token")
       this.$store.commit('user/changeUserConnectionState')
+      this.$store.commit("band/toggleBandAsSuccess", "Vous vous êtes déconnecté")
     },
   },
 };
