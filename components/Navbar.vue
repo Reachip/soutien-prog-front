@@ -67,6 +67,7 @@
           <div class="hidden sm:block sm:ml-6">
             <div class="flex space-x-4">
               <a
+                href="#"
                 class="px-3 py-2 rounded-md text-sm font-medium text-white"
                 >Accueil</a
               >
@@ -75,6 +76,7 @@
                   bg-gray-150
                   px-3
                   py-2
+                  cursor-pointer
                   rounded-md
                   text-sm
                   font-medium
@@ -91,6 +93,7 @@
                   px-3
                   py-2
                   rounded-md
+                  cursor-pointer
                   text-sm
                   font-medium
                   text-white
@@ -106,6 +109,7 @@
                   py-2
                   rounded-md
                   text-sm
+                  cursor-pointer
                   font-medium
                   text-white
                 "
@@ -146,6 +150,7 @@
 export default {
   methods: {
     changeModalPurposeVisibility() {
+      this.$store.commit("band/closeBand")
       this.$store.commit("modal/togglePurposeModal")
     },
 

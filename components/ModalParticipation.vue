@@ -153,7 +153,8 @@ export default {
 
   methods: {
     changeModalPurposeVisibility() {
-      this.$store.commit("modal/toggleParticipationModal");
+      this.$store.commit("modal/toggleParticipationModal")
+      this.$store.commit("band/closeBand")
     },
 
     async participateHandler() {
@@ -165,9 +166,10 @@ export default {
             name: this.username,
           });
 
+          this.$store.commit("band/toggleBandAsSuccess", "Votre demande de participation a bien été enregistré. Vous recevrez le lien vers la visioconférence par mail et serait notifié 5 minutes avant le début du soutien.")
           this.$store.commit("modal/toggleParticipationModal");
         } catch (_) {
-          // TODO
+          this.$store.commit("band/toggleBandAsFail", "Impossible de participer au cours : Votre nom est déjà utilisé pour ce cours")
         }
       }
     },

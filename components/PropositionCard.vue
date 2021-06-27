@@ -39,6 +39,7 @@ export default {
       toggleParticipationModal() {
           this.$store.commit('modalParticipation/changeCourseSelection', this.$props.id)
           this.$store.commit('modal/toggleParticipationModal')
+          this.$store.commit("band/closeBand")
       }
   }  
 }

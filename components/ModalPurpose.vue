@@ -206,7 +206,8 @@ import jwtDecode from 'jwt-decode';
 export default {
   methods: {
     togglePurposeModal() {
-      this.$store.commit("modal/togglePurposeModal");
+      this.$store.commit("modal/togglePurposeModal")
+      this.$store.commit("band/closeBand")
     },
 
     async postNewCourse() {
@@ -224,10 +225,11 @@ export default {
       }
 
       try {
-        await this.$axios.post("/course/", data, config);
-        this.$store.commit("modal/togglePurposeModal");
+        await this.$axios.post("/course/", data, config)
+        this.$store.commit("modal/togglePurposeModal")
+        this.$store.commit("band/toggleBandAsSuccess", "Votre cours a bien été enregistré")
       } catch (_) {
-        // TODO
+        this.$store.commit("band/toggleBandAsFail", "Impossible de créer votre cours")
       }
     },
   },

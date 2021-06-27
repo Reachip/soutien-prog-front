@@ -157,6 +157,7 @@ export default {
   methods: {
     changeModalConnectionVisibility() {
       this.$store.commit("modal/toggleConnectionModal");
+      this.$store.commit("band/closeBand")
     },
 
     async handleConnection() {
@@ -178,7 +179,6 @@ export default {
         this.$store.commit("band/toggleBandAsSuccess", "Vous êtes connecté !")
       } catch (_) {
         this.$store.commit("band/toggleBandAsFail", "Impossible de se connecter. Veuillez vérifer vos identifiants")
-        this.$store.commit("modal/toggleConnectionModal")
       }
     },
   },
