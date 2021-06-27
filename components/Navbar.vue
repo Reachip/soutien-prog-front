@@ -1,5 +1,6 @@
 <template>
   <nav class="bg-gray-100 shadow sticky top-0 z-50">
+    <Band />
     <div class="px-2 sm:px-6 lg:px-8 bg-red-700">
       <div class="relative flex items-center justify-between h-16">
         <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -66,12 +67,10 @@
           <div class="hidden sm:block sm:ml-6">
             <div class="flex space-x-4">
               <a
-                href="#"
                 class="px-3 py-2 rounded-md text-sm font-medium text-white"
                 >Accueil</a
               >
               <a
-                href="#"
                 class="
                   bg-gray-150
                   px-3
@@ -98,7 +97,6 @@
                 "
                 @click="changeConnectionModalVisibility()"
                 v-show="!this.$store.state.user.isConnected"
-                href="#"
                 >Connexion</a>
 
                 <a
@@ -113,7 +111,6 @@
                 "
                 @click="logout()"
                 v-show="this.$store.state.user.isConnected"
-                href="#"
                 >Deconnexion</a>
             </div>
           </div>
@@ -123,7 +120,6 @@
     <div class="sm:hidden" id="mobile-menu">
       <div class="px-2 pt-2 pb-3 space-y-1">
         <a
-          href="#"
           class="
             text-black
             block
@@ -137,7 +133,6 @@
           >Accueil</a
         >
         <a
-          href="#"
           id="proposer-soutien"
           v-show="this.$store.state.user.isConnected"
           class="text-black px-3 py-2 rounded-md text-base font-medium"
