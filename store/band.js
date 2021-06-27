@@ -21,6 +21,14 @@ export const mutations = {
         state.bgProp = "bg-green-600"
     },
 
+    toggleBandAsInfo(state, text) {
+        if (state.bandIsInvisible)
+            state.bandIsInvisible = false   
+
+        state.text = text
+        state.bgProp = "bg-yellow-600"
+    },
+
     closeBand(state) {
         state.bandIsInvisible = true   
     }
