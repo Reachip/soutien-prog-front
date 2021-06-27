@@ -117,7 +117,7 @@
                       "
                       v-model="moduleName"
                     >
-                      <option v-for="module in this.$store.state.module.modules">
+                      <option v-for="module in this.$store.state.courseData.modules">
                         {{ module.module_name }}
                       </option>
                     </select>
@@ -201,7 +201,7 @@
 </template>
 <script>
 import moment from 'moment'
-import jwt_decode from "jwt-decode";
+import jwtDecode from 'jwt-decode';
 
 export default {
   methods: {
@@ -213,12 +213,12 @@ export default {
       const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       };
-      console.log(jwt_decode(localStorage.getItem("token")))
+
       const data = {
           description: this.description,
           ending_at:  moment(`${this.ending_at_date} ${this.ending_at_time}`, 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm:ss.SSS'),
           starting_at: moment(`${this.starting_at_date} ${this.starting_at_time}`, 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm:ss.SSS'),
-          teacher: "Rached",
+          teacher: jwtDecode(localStorage.getItem("token")).username,
           school_module: this.moduleName,
           course_name: this.course_name
       }
@@ -226,8 +226,8 @@ export default {
       try {
         await this.$axios.post("/course/", data, config);
         this.$store.commit("modal/togglePurposeModal");
-      } catch (_) {
-        // TODO
+      } catch (why) {
+        console.log(why)
       }
     },
   },

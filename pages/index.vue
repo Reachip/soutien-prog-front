@@ -77,8 +77,8 @@ export default {
     }
 
     this.filteredCourses = this.courses
-
     this.modules = (await this.$axios.get("/module/")).data;
+    this.$store.commit('courseData/setModules', this.modules)
   },
 
   methods: {
