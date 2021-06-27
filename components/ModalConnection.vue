@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div
-      class="fixed z-10 inset-0 overflow-y-auto"
+      class="fixed z-60 inset-0 overflow-y-auto"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
@@ -171,13 +171,14 @@ export default {
         jwt_decode(response.access);
 
         // If the request is a success and the token is valid
-        this.$store.commit("modal/toggleConnectionModal");
-        this.$store.commit("user/changeUserConnectionState");
-        localStorage.setItem("token", response.access);
-        this.username = null;
-        this.password = null;
+        this.$store.commit("modal/toggleConnectionModal")
+        this.$store.commit("user/changeUserConnectionState")
+        localStorage.setItem("token", response.access)
+        this.username = null; this.password = null
+        this.$store.commit("band/toggleBandAsSuccess", "Vous êtes connecté !")
       } catch (_) {
-        // TODO
+        this.$store.commit("band/toggleBandAsFail", "Impossible de se connecter. Veuillez vérifer vos identifiants")
+        this.$store.commit("modal/toggleConnectionModal")
       }
     },
   },

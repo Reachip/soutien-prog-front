@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div
-      class="fixed z-10 inset-0 overflow-y-auto"
+      class="fixed z-60 inset-0 overflow-y-auto"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
