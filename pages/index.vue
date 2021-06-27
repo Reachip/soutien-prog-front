@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Band />
     <Navbar />
     <ModalParticipation />
     <ModalConnection />
