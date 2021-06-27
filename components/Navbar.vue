@@ -161,7 +161,6 @@ export default {
     logout() {
       localStorage.removeItem("token")
       this.$store.commit('user/changeUserConnectionState')
-      console.log("removed")
     },
   },
 };

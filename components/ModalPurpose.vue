@@ -226,8 +226,8 @@ export default {
       try {
         await this.$axios.post("/course/", data, config);
         this.$store.commit("modal/togglePurposeModal");
-      } catch (why) {
-        console.log(why)
+      } catch (_) {
+        // TODO
       }
     },
   },
