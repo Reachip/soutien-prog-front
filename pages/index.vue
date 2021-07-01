@@ -31,23 +31,36 @@
               <label class="font-bold text-xl text-white"
                 >Pour quel module ?</label
               ><br />
-              <select class="min-w-full border rounded bg-gray-100 border-gray-200 p-2 my-2" v-model="moduleInput" @change="filterCourse()">
+              <select
+                class="
+                  min-w-full
+                  border
+                  rounded
+                  bg-gray-100
+                  border-gray-200
+                  p-2
+                  my-2
+                "
+                v-model="moduleInput"
+                @change="filterCourse()"
+              >
                 <option></option>
-                <option v-for="module in modules">{{module.module_name}}</option>
+                <option v-for="module in modules">
+                  {{ module.module_name }}
+                </option>
               </select>
-              
             </div>
           </div>
         </div>
       </header>
       <div v-for="course in filteredCourses">
         <PropositionCard
-          :id=course.id
-          :title=course.course_name
-          :author=course.teacher
-          :startAt=course.starting_at
-          :endAt=course.ending_at
-          :subject=course.description
+          :id="course.id"
+          :title="course.course_name"
+          :author="course.teacher"
+          :startAt="course.starting_at"
+          :endAt="course.ending_at"
+          :subject="course.description"
         />
       </div>
     </main>
@@ -56,54 +69,67 @@
 </template>
 
 <script>
-import moment from 'moment'
+import moment from "moment";
 
 export default {
   mounted() {
     if (localStorage.getItem("token"))
-      this.$store.commit('user/changeUserConnectionState')
+      this.$store.commit("user/changeUserConnectionState");
 
-    this.$store.commit("band/toggleBandAsInfo", "Bienvene sur la version experimental de SoutienProg. Vous pouvez organiser des cours en faisant une demande d'inscription à Rached Mejri.")
+    this.$store.commit(
+      "band/toggleBandAsInfo",
+      "Bienvene sur la version experimental de SoutienProg. Vous pouvez organiser des cours en faisant une demande d'inscription à Rached Mejri."
+    );
   },
 
   async beforeMount() {
     this.courses = (await this.$axios.get("/course/")).data;
-    
-    for (let index=0; index < this.courses.length; index++) {
-      this.courses[index].starting_at = 
-        moment(this.courses[index].starting_at, 'YYYY-MM-DDTHH:mm:ss.SSS').format('DD-MM-YYYY HH:mm')
 
-      this.courses[index].ending_at = 
-        moment(this.courses[index].ending_at, 'YYYY-MM-DDTHH:mm:ss.SSS').format('DD-MM-YYYY HH:mm')
+    for (let index = 0; index < this.courses.length; index++) {
+      this.courses[index].starting_at = moment(
+        this.courses[index].starting_at,
+        "YYYY-MM-DDTHH:mm:ss.SSS"
+      ).format("DD-MM-YYYY HH:mm");
+
+      this.courses[index].ending_at = moment(
+        this.courses[index].ending_at,
+        "YYYY-MM-DDTHH:mm:ss.SSS"
+      ).format("DD-MM-YYYY HH:mm");
     }
 
-    this.filteredCourses = this.courses
+    this.filteredCourses = this.courses;
     this.modules = (await this.$axios.get("/module/")).data;
-    this.$store.commit('courseData/setModules', this.modules)
+    this.$store.commit("courseData/setModules", this.modules);
   },
 
   methods: {
     filterCourse() {
-      this.filteredCourses = this.courses
+      this.filteredCourses = this.courses;
 
       if (this.dateInput && this.moduleInput) {
-        this.filteredCourses = this.filteredCourses
-          .filter(course => {
-            const formatedDate = moment(course.starting_at, 'DD-MM-YYYY HH:mm').format("YYYY-MM-DD")
-            return formatedDate === this.dateInput && course.school_module === this.moduleInput
-          })
+        this.filteredCourses = this.filteredCourses.filter((course) => {
+          const formatedDate = moment(
+            course.starting_at,
+            "DD-MM-YYYY HH:mm"
+          ).format("YYYY-MM-DD");
+          return (
+            formatedDate === this.dateInput &&
+            course.school_module === this.moduleInput
+          );
+        });
+      } else if (this.dateInput) {
+        this.filteredCourses = this.filteredCourses.filter(
+          (course) =>
+            moment(course.starting_at, "DD-MM-YYYY HH:mm").format(
+              "YYYY-MM-DD"
+            ) === this.dateInput
+        );
+      } else if (this.moduleInput) {
+        this.filteredCourses = this.filteredCourses.filter(
+          (course) => course.school_module === this.moduleInput
+        );
       }
-
-      else if (this.dateInput) {
-         this.filteredCourses = this.filteredCourses
-          .filter(course => moment(course.starting_at, 'DD-MM-YYYY HH:mm').format("YYYY-MM-DD") === this.dateInput)
-      }
-
-      else if (this.moduleInput) {
-        this.filteredCourses = this.filteredCourses
-          .filter(course => course.school_module === this.moduleInput)
-      }
-    }
+    },
   },
 
   data() {
@@ -112,7 +138,7 @@ export default {
       dateInput: null,
       modules: null,
       courses: null,
-      moduleInput: null
+      moduleInput: null,
     };
   },
 };

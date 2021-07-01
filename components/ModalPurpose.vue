@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div
-      class="fixed z-60 inset-0 overflow-y-auto"
+      class="fixed top-24 inset-0 overflow-y-auto"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
@@ -17,8 +17,7 @@
           px-4
           pb-20
           text-center
-          sm:block
-          sm:p-0
+          sm:block sm:p-0
         "
       >
         <div
@@ -41,10 +40,7 @@
             shadow-xl
             transform
             transition-all
-            sm:my-8
-            sm:align-middle
-            sm:max-w-lg
-            sm:w-full
+            sm:my-8 sm:align-middle sm:max-w-lg sm:w-full
           "
         >
           <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -66,6 +62,19 @@
                       v-model="course_name"
                       class="bg-gray-200 p-2 rounded my-2"
                     />
+                    <span
+                      class="
+                        flex
+                        items-center
+                        font-medium
+                        tracking-wide
+                        text-red-500 text-xs
+                        mt-1
+                        ml-1
+                      "
+                    >
+                      Invalid username field !
+                    </span>
                   </div>
 
                   <div class="m-4">
@@ -84,6 +93,19 @@
                       v-model="starting_at_time"
                       class="bg-gray-200 p-2 rounded my-2"
                     />
+                    <span
+                      class="
+                        flex
+                        items-center
+                        font-medium
+                        tracking-wide
+                        text-red-500 text-xs
+                        mt-1
+                        ml-1
+                      "
+                    >
+                      Invalid username field !
+                    </span>
                   </div>
 
                   <div class="m-4">
@@ -101,6 +123,19 @@
                       v-model="ending_at_time"
                       class="bg-gray-200 p-2 rounded my-2"
                     />
+                    <span
+                      class="
+                        flex
+                        items-center
+                        font-medium
+                        tracking-wide
+                        text-red-500 text-xs
+                        mt-1
+                        ml-1
+                      "
+                    >
+                      Invalid username field !
+                    </span>
                   </div>
 
                   <div class="m-4">
@@ -117,10 +152,25 @@
                       "
                       v-model="moduleName"
                     >
-                      <option v-for="module in this.$store.state.courseData.modules">
+                      <option
+                        v-for="module in this.$store.state.courseData.modules"
+                      >
                         {{ module.module_name }}
                       </option>
                     </select>
+                    <span
+                      class="
+                        flex
+                        items-center
+                        font-medium
+                        tracking-wide
+                        text-red-500 text-xs
+                        mt-1
+                        ml-1
+                      "
+                    >
+                      Invalid username field !
+                    </span>
                   </div>
 
                   <div class="m-4">
@@ -132,6 +182,19 @@
                       v-model="description"
                       cols="35"
                     ></textarea>
+                    <span
+                      class="
+                        flex
+                        items-center
+                        font-medium
+                        tracking-wide
+                        text-red-500 text-xs
+                        mt-1
+                        ml-1
+                      "
+                    >
+                      Invalid username field !
+                    </span>
                   </div>
                 </div>
               </div>
@@ -155,10 +218,10 @@
                 text-white
                 hover:bg-red-700
                 focus:outline-none
-                focus:ring-2 focus:ring-offset-2 focus:ring-red-500
-                sm:ml-3
-                sm:w-auto
-                sm:text-sm
+                focus:ring-2
+                focus:ring-offset-2
+                focus:ring-red-500
+                sm:ml-3 sm:w-auto sm:text-sm
               "
               @click="postNewCourse()"
             >
@@ -183,11 +246,10 @@
                 text-gray-700
                 hover:bg-gray-50
                 focus:outline-none
-                focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-                sm:mt-0
-                sm:ml-3
-                sm:w-auto
-                sm:text-sm
+                focus:ring-2
+                focus:ring-offset-2
+                focus:ring-indigo-500
+                sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm
               "
               @click="togglePurposeModal()"
             >
@@ -200,36 +262,48 @@
   </transition>
 </template>
 <script>
-import moment from 'moment'
-import jwtDecode from 'jwt-decode';
+import moment from "moment";
+import jwtDecode from "jwt-decode";
 
 export default {
   methods: {
     togglePurposeModal() {
-      this.$store.commit("modal/togglePurposeModal")
-      this.$store.commit("band/closeBand")
+      this.$store.commit("modal/togglePurposeModal");
+      this.$store.commit("band/closeBand");
     },
 
     async postNewCourse() {
       const config = {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       };
 
       const data = {
-          description: this.description,
-          ending_at:  moment(`${this.ending_at_date} ${this.ending_at_time}`, 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm:ss.SSS'),
-          starting_at: moment(`${this.starting_at_date} ${this.starting_at_time}`, 'DD-MM-YYYY HH:mm').format('YYYY-MM-DDTHH:mm:ss.SSS'),
-          teacher: jwtDecode(localStorage.getItem("token")).username,
-          school_module: this.moduleName,
-          course_name: this.course_name
-      }
+        description: this.description,
+        ending_at: moment(
+          `${this.ending_at_date} ${this.ending_at_time}`,
+          "DD-MM-YYYY HH:mm"
+        ).format("YYYY-MM-DDTHH:mm:ss.SSS"),
+        starting_at: moment(
+          `${this.starting_at_date} ${this.starting_at_time}`,
+          "DD-MM-YYYY HH:mm"
+        ).format("YYYY-MM-DDTHH:mm:ss.SSS"),
+        teacher: jwtDecode(localStorage.getItem("token")).username,
+        school_module: this.moduleName,
+        course_name: this.course_name,
+      };
 
       try {
-        await this.$axios.post("/course/", data, config)
-        this.$store.commit("modal/togglePurposeModal")
-        this.$store.commit("band/toggleBandAsSuccess", "Votre cours a bien été enregistré")
+        await this.$axios.post("/course/", data, config);
+        this.$store.commit("modal/togglePurposeModal");
+        this.$store.commit(
+          "band/toggleBandAsSuccess",
+          "Votre cours a bien été enregistré"
+        );
       } catch (_) {
-        this.$store.commit("band/toggleBandAsFail", "Impossible de créer votre cours")
+        this.$store.commit(
+          "band/toggleBandAsFail",
+          "Impossible de créer votre cours"
+        );
       }
     },
   },
@@ -242,7 +316,7 @@ export default {
       starting_at_date: null,
       starting_at_time: null,
       moduleName: null,
-      description: null
+      description: null,
     };
   },
 };

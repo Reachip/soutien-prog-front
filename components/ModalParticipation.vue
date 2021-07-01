@@ -17,8 +17,7 @@
           px-4
           pb-20
           text-center
-          sm:block
-          sm:p-0
+          sm:block sm:p-0
         "
       >
         <div
@@ -41,10 +40,7 @@
             shadow-xl
             transform
             transition-all
-            sm:my-8
-            sm:align-middle
-            sm:max-w-lg
-            sm:w-full
+            sm:my-8 sm:align-middle sm:max-w-lg sm:w-full
           "
         >
           <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -98,10 +94,10 @@
                 text-white
                 hover:bg-red-700
                 focus:outline-none
-                focus:ring-2 focus:ring-offset-2 focus:ring-red-500
-                sm:ml-3
-                sm:w-auto
-                sm:text-sm
+                focus:ring-2
+                focus:ring-offset-2
+                focus:ring-red-500
+                sm:ml-3 sm:w-auto sm:text-sm
               "
               @click="participateHandler()"
             >
@@ -126,11 +122,10 @@
                 text-gray-700
                 hover:bg-gray-50
                 focus:outline-none
-                focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-                sm:mt-0
-                sm:ml-3
-                sm:w-auto
-                sm:text-sm
+                focus:ring-2
+                focus:ring-offset-2
+                focus:ring-indigo-500
+                sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm
               "
               @click="changeModalPurposeVisibility()"
             >
@@ -153,8 +148,8 @@ export default {
 
   methods: {
     changeModalPurposeVisibility() {
-      this.$store.commit("modal/toggleParticipationModal")
-      this.$store.commit("band/closeBand")
+      this.$store.commit("modal/toggleParticipationModal");
+      this.$store.commit("band/closeBand");
     },
 
     async participateHandler() {
@@ -166,10 +161,16 @@ export default {
             name: this.username,
           });
 
-          this.$store.commit("band/toggleBandAsSuccess", "Votre demande de participation a bien été enregistré. Vous recevrez le lien vers la visioconférence par mail et serait notifié 5 minutes avant le début du soutien.")
+          this.$store.commit(
+            "band/toggleBandAsSuccess",
+            "Votre demande de participation a bien été enregistré. Vous recevrez le lien vers la visioconférence par mail et serait notifié 5 minutes avant le début du soutien."
+          );
           this.$store.commit("modal/toggleParticipationModal");
         } catch (_) {
-          this.$store.commit("band/toggleBandAsFail", "Impossible de participer au cours : Votre nom est déjà utilisé pour ce cours")
+          this.$store.commit(
+            "band/toggleBandAsFail",
+            "Impossible de participer au cours : Votre nom est déjà utilisé pour ce cours"
+          );
         }
       }
     },

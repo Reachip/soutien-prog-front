@@ -14,10 +14,8 @@
               p-2
               rounded-md
               text-gray-400
-              hover:text-white
-              hover:bg-gray-700
-              focus:outline-none
-              focus:ring-2 focus:ring-inset focus:ring-white
+              hover:text-white hover:bg-gray-700
+              focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white
             "
             aria-controls="mobile-menu"
             aria-expanded="false"
@@ -60,8 +58,7 @@
             flex-1 flex
             items-center
             justify-center
-            sm:items-stretch
-            sm:justify-start
+            sm:items-stretch sm:justify-start
           "
         >
           <div class="hidden sm:block sm:ml-6">
@@ -100,9 +97,10 @@
                 "
                 @click="changeConnectionModalVisibility()"
                 v-show="!this.$store.state.user.isConnected"
-                >Connexion</a>
+                >Connexion</a
+              >
 
-                <a
+              <a
                 class="
                   bg-gray-150
                   px-3
@@ -115,7 +113,8 @@
                 "
                 @click="logout()"
                 v-show="this.$store.state.user.isConnected"
-                >Deconnexion</a>
+                >Deconnexion</a
+              >
             </div>
           </div>
         </div>
@@ -124,15 +123,7 @@
     <div class="sm:hidden" id="mobile-menu">
       <div class="px-2 pt-2 pb-3 space-y-1">
         <a
-          class="
-            text-black
-            block
-            px-3
-            py-2
-            rounded-md
-            text-base
-            font-medium
-          "
+          class="text-black block px-3 py-2 rounded-md text-base font-medium"
           aria-current="page"
           >Accueil</a
         >
@@ -150,18 +141,21 @@
 export default {
   methods: {
     changeModalPurposeVisibility() {
-      this.$store.commit("band/closeBand")
-      this.$store.commit("modal/togglePurposeModal")
+      this.$store.commit("band/closeBand");
+      this.$store.commit("modal/togglePurposeModal");
     },
 
     changeConnectionModalVisibility() {
-      this.$store.commit("modal/toggleConnectionModal")
+      this.$store.commit("modal/toggleConnectionModal");
     },
 
     logout() {
-      localStorage.removeItem("token")
-      this.$store.commit('user/changeUserConnectionState')
-      this.$store.commit("band/toggleBandAsSuccess", "Vous vous êtes déconnecté")
+      localStorage.removeItem("token");
+      this.$store.commit("user/changeUserConnectionState");
+      this.$store.commit(
+        "band/toggleBandAsSuccess",
+        "Vous vous êtes déconnecté"
+      );
     },
   },
 };
