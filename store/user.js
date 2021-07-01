@@ -1,9 +1,9 @@
 export const state = () => ({
-    isConnected: false
-})
-  
+  isConnected: false,
+});
+
 export const mutations = {
-    changeUserConnectionState (state) {
-        state.isConnected = !state.isConnected
-    },
-}
+  changeUserConnectionState(state) {
+    state.isConnected = !state.isConnected;
+  },
+};

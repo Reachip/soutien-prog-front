@@ -1,9 +1,9 @@
 export const state = () => ({
-    selectedCourse: null
-})
-  
+  selectedCourse: null,
+});
+
 export const mutations = {
-    changeCourseSelection (state, courseID) {
-        state.selectedCourse = courseID
-    },
-}
+  changeCourseSelection(state, courseID) {
+    state.selectedCourse = courseID;
+  },
+};
