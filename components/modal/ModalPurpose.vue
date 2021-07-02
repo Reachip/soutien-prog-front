@@ -63,6 +63,7 @@
                       class="bg-gray-200 p-2 rounded my-2"
                     />
                     <span
+                      v-if="msg.courseName"
                       class="
                         flex
                         items-center
@@ -73,7 +74,7 @@
                         ml-1
                       "
                     >
-                      Invalid username field !
+                      {{ msg.courseName }}
                     </span>
                   </div>
 
@@ -94,6 +95,7 @@
                       class="bg-gray-200 p-2 rounded my-2"
                     />
                     <span
+                      v-if="msg.startingAt"
                       class="
                         flex
                         items-center
@@ -104,7 +106,7 @@
                         ml-1
                       "
                     >
-                      Invalid username field !
+                      {{ msg.startingAt }}
                     </span>
                   </div>
 
@@ -124,6 +126,7 @@
                       class="bg-gray-200 p-2 rounded my-2"
                     />
                     <span
+                      v-if="msg.endingAt"
                       class="
                         flex
                         items-center
@@ -134,7 +137,7 @@
                         ml-1
                       "
                     >
-                      Invalid username field !
+                      {{ msg.endingAt }}
                     </span>
                   </div>
 
@@ -159,6 +162,7 @@
                       </option>
                     </select>
                     <span
+                      v-if="msg.moduleName"
                       class="
                         flex
                         items-center
@@ -169,7 +173,7 @@
                         ml-1
                       "
                     >
-                      Invalid username field !
+                      {{ msg.moduleName }}
                     </span>
                   </div>
 
@@ -183,6 +187,7 @@
                       cols="35"
                     ></textarea>
                     <span
+                      v-if="msg.description"
                       class="
                         flex
                         items-center
@@ -193,7 +198,7 @@
                         ml-1
                       "
                     >
-                      Invalid username field !
+                      {{ msg.description }}
                     </span>
                   </div>
                 </div>
@@ -223,13 +228,13 @@
                 focus:ring-red-500
                 sm:ml-3 sm:w-auto sm:text-sm
               "
+              m
               @click="postNewCourse()"
             >
               Proposer un soutien
             </button>
             <button
               type="button"
-              id="proposer-soutien-return"
               class="
                 mt-3
                 w-full
@@ -266,13 +271,24 @@ import moment from "moment";
 import jwtDecode from "jwt-decode";
 
 export default {
+  mounted() {
+    this.invokeCheckers();
+  },
+
   methods: {
     togglePurposeModal() {
       this.$store.commit("modal/togglePurposeModal");
       this.$store.commit("band/closeBand");
     },
 
+    errorMessageHandlerIfValueIsNull(value, message) {
+      if (value) this.msg["courseName"] = "";
+      else this.msg["courseName"] = "Veuillez indiquer un nom pour de soutien";
+    },
+
     async postNewCourse() {
+      this.invokeCheckers();
+
       const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       };
@@ -306,10 +322,62 @@ export default {
         );
       }
     },
+
+    invokeCheckers() {
+      this.startingAtDateChecker();
+      this.startingAtTimeChecker();
+      this.courseNameChecker();
+      this.endingAtDateChecker();
+      this.endingAtTimeChecker();
+      this.startingAtTimeChecker();
+      this.startingAtDateChecker();
+      this.moduleNameChecker();
+      this.descriptionChecker();
+    },
+
+    startingAtTimeChecker(value) {
+      if (value) this.msg["startingAt"] = "";
+      else this.msg["startingAt"] = "Veuillez indiquer une heure de début";
+    },
+
+    courseNameChecker(value) {
+      if (value) this.msg["courseName"] = "";
+      else this.msg["courseName"] = "Veuillez indiquer un nom pour ce soutien";
+    },
+
+    endingAtDateChecker(value) {
+      if (value) this.msg["endingAt"] = "";
+      else this.msg["endingAt"] = "Veuillez indiquer une date de fin";
+    },
+
+    endingAtTimeChecker(value) {
+      if (value) this.msg["endingAt"] = "";
+      else this.msg["endingAt"] = "Veuillez indiquer une heure de fin";
+    },
+
+    startingAtDateChecker(value) {
+      if (value) this.msg["startingAt"] = "";
+      else this.msg["startingAt"] = "Veuillez indiquer une date de début";
+    },
+
+    moduleNameChecker(value) {
+      if (value) this.msg["moduleName"] = "";
+      else
+        this.msg["moduleName"] =
+          "Veuillez séléctionner un module pour ce soutien";
+    },
+
+    descriptionChecker(value) {
+      if (value) this.msg["description"] = "";
+      else
+        this.msg["description"] =
+          "Veuillez renseigner un description pour ce soutien";
+    },
   },
 
   data: function () {
     return {
+      msg: [],
       course_name: null,
       ending_at_date: null,
       ending_at_time: null,
@@ -318,6 +386,36 @@ export default {
       moduleName: null,
       description: null,
     };
+  },
+
+  watch: {
+    course_name(value) {
+      this.courseNameChecker(value);
+    },
+
+    ending_at_date(value) {
+      this.endingAtDateChecker(value);
+    },
+
+    ending_at_time(value) {
+      this.endingAtTimeChecker(value);
+    },
+
+    starting_at_date(value) {
+      this.startingAtDateChecker(value);
+    },
+
+    starting_at_time(value) {
+      this.startingAtTimeChecker(value);
+    },
+
+    moduleName(value) {
+      this.moduleNameChecker(value);
+    },
+
+    description(value) {
+      this.descriptionChecker(value);
+    },
   },
 };
 </script>

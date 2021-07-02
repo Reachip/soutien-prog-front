@@ -61,8 +61,21 @@
                       v-model="username"
                       class="bg-gray-200 p-2 rounded my-2 min-w-full"
                     />
+                    <span
+                      v-if="msg.username"
+                      class="
+                        flex
+                        items-center
+                        font-medium
+                        tracking-wide
+                        text-red-500 text-xs
+                        mt-1
+                        ml-1
+                      "
+                    >
+                      {{ msg.username }}
+                    </span>
                   </div>
-
                   <div class="m-4">
                     <label class="text-base">Adresse mail</label><br />
                     <input
@@ -71,6 +84,20 @@
                       v-model="email"
                       class="bg-gray-200 p-2 rounded my-2 min-w-full"
                     />
+                    <span
+                      v-if="msg.email"
+                      class="
+                        flex
+                        items-center
+                        font-medium
+                        tracking-wide
+                        text-red-500 text-xs
+                        mt-1
+                        ml-1
+                      "
+                    >
+                      {{ msg.email }}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -143,13 +170,43 @@ export default {
     return {
       username: null,
       email: null,
+      msg: [],
     };
+  },
+
+  mounted() {
+    this.invokeCheckers();
   },
 
   methods: {
     changeModalPurposeVisibility() {
       this.$store.commit("modal/toggleParticipationModal");
       this.$store.commit("band/closeBand");
+    },
+
+    invokeCheckers() {
+      this.usernameChecker(this.email);
+      this.emailChecker(this.username);
+    },
+
+    usernameChecker(value) {
+      if (value) this.msg["username"] = "";
+      else
+        this.msg["username"] =
+          "Veuillez indiquer votre prénom ainsi que votre nom";
+    },
+
+    emailChecker(value) {
+      if (value) {
+        const regex =
+          /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        if (regex.test(String(this.email).toLowerCase())) {
+          this.msg["email"] = "";
+        } else {
+          this.msg["email"] = "Veuillez indiquer une adresse mail valide";
+        }
+      } else this.msg["email"] = "Veuillez indiquer une adresse mail";
     },
 
     async participateHandler() {
@@ -169,10 +226,20 @@ export default {
         } catch (_) {
           this.$store.commit(
             "band/toggleBandAsFail",
-            "Impossible de participer au cours : Votre nom est déjà utilisé pour ce cours"
+            "Impossible de participer au cours : L'adresse mail est invalide"
           );
         }
       }
+    },
+  },
+
+  watch: {
+    username(value) {
+      this.usernameChecker(value);
+    },
+
+    email(value) {
+      this.emailChecker(value);
     },
   },
 };
