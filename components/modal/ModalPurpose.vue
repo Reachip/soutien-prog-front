@@ -201,6 +201,30 @@
                       {{ msg.description }}
                     </span>
                   </div>
+
+                  <div class="m-4">
+                    <label class="text-base">Lien vers la visio</label><br />
+                    <input
+                      type="text"
+                      placeholder=""
+                      v-model="linkTo"
+                      class="bg-gray-200 p-2 rounded my-2"
+                    />
+                    <span
+                      v-if="msg.linkTo"
+                      class="
+                        flex
+                        items-center
+                        font-medium
+                        tracking-wide
+                        text-red-500 text-xs
+                        mt-1
+                        ml-1
+                      "
+                    >
+                      {{ msg.linkTo }}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -306,6 +330,7 @@ export default {
         teacher: jwtDecode(localStorage.getItem("token")).username,
         school_module: this.moduleName,
         course_name: this.course_name,
+        link_to: this.linkTo,
       };
 
       try {
@@ -367,6 +392,34 @@ export default {
           "Veuillez séléctionner un module pour ce soutien";
     },
 
+    linkToChecker(value) {
+      if (value) {
+        let disc,
+          zoom,
+          teams,
+          meet =
+            ("https://discord.gg/",
+            "https://us05web.zoom.us/",
+            "https://teams.microsoft.com/",
+            "https://meet.google.com/");
+
+        if (
+          value.startsWith(zoom) ||
+          value.startsWith(teams) ||
+          value.startsWith(meet) ||
+          value.startsWith(disc)
+        ) {
+          this.msg["linkTo"] = "";
+        } else {
+          this.msg["linkTo"] =
+            "Lien vers la visioconférence invalide : Les platformes acceptées sont Discord, Google Meet, Zoom ou Microsoft Teams";
+        }
+      } else {
+        this.msg["linkTo"] =
+          "Veuillez renseigner un lien pour la visio de ce soutien";
+      }
+    },
+
     descriptionChecker(value) {
       if (value) this.msg["description"] = "";
       else
@@ -385,10 +438,15 @@ export default {
       starting_at_time: null,
       moduleName: null,
       description: null,
+      linkTo: null,
     };
   },
 
   watch: {
+    linkTo(value) {
+      this.linkToChecker(value);
+    },
+
     course_name(value) {
       this.courseNameChecker(value);
     },
