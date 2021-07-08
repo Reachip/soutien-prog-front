@@ -63,6 +63,7 @@
           :subject="course.description"
         />
       </div>
+      <p v-if="!filteredCourses" class="text-center text-xl text-red-700 mt-12">Aucun soutien n'a été trouvé pour aujourd'hui ...</p>
     </main>
     <Footer />
   </div>
@@ -84,19 +85,23 @@ export default {
 
   async beforeMount() {
     this.courses = (await this.$axios.get("/course/")).data;
-
+    
     for (let index = 0; index < this.courses.length; index++) {
-      this.courses[index].starting_at = moment(
-        this.courses[index].starting_at,
-        "YYYY-MM-DDTHH:mm:ss.SSS"
-      ).format("DD-MM-YYYY HH:mm");
+      try {
+        const course = this.courses[index];
 
-      this.courses[index].ending_at = moment(
-        this.courses[index].ending_at,
-        "YYYY-MM-DDTHH:mm:ss.SSS"
-      ).format("DD-MM-YYYY HH:mm");
+        course.starting_at = moment(
+          course.starting_at,
+          "YYYY-MM-DDTHH:mm:ss.SSS"
+        ).format("DD-MM-YYYY HH:mm");
+
+        course.ending_at = moment(
+          course.ending_at,
+          "YYYY-MM-DDTHH:mm:ss.SSS"
+        ).format("DD-MM-YYYY HH:mm");
+      } catch (why) {}
     }
-
+      
     this.filteredCourses = this.courses;
     this.modules = (await this.$axios.get("/module/")).data;
     this.$store.commit("courseData/setModules", this.modules);
