@@ -4,6 +4,7 @@
     <ModalParticipation />
     <ModalConnection />
     <ModalPurpose />
+    <div class="bg-green-600 bg-yellow-600"></div>
     <main>
       <header class="bg-red-700 h-58 border">
         <div>
