@@ -155,10 +155,10 @@
 </template>
 <script>
 export default {
-  data: function() {
+  data: function () {
     return {
-      isMobileMenuOpen: false
-    }
+      isMobileMenuOpen: false,
+    };
   },
 
   methods: {
