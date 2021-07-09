@@ -157,7 +157,7 @@
 export default {
   data: function() {
     return {
-      isMobileMenuOpen: true
+      isMobileMenuOpen: false
     }
   },
 
