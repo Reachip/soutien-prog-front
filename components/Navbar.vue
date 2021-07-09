@@ -6,6 +6,7 @@
         <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
           <!-- Mobile menu button-->
           <button
+            @click="isMobileMenuOpen = !isMobileMenuOpen"
             type="button"
             class="
               inline-flex
@@ -14,7 +15,7 @@
               p-2
               rounded-md
               text-gray-400
-              hover:text-white hover:bg-gray-700
+              hover:text-white hover:bg-white-700
               focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white
             "
             aria-controls="mobile-menu"
@@ -120,7 +121,7 @@
         </div>
       </div>
     </div>
-    <div class="sm:hidden" id="mobile-menu">
+    <div class="sm:hidden" id="mobile-menu" v-show="isMobileMenuOpen">
       <div class="px-2 pt-2 pb-3 space-y-1">
         <a
           class="text-black block px-3 py-2 rounded-md text-base font-medium"
@@ -128,10 +129,25 @@
           >Accueil</a
         >
         <a
+          class="text-black block px-3 py-2 rounded-md text-base font-medium"
+          aria-current="page"
+          v-show="!this.$store.state.user.isConnected"
+          @click="changeConnectionModalVisibility()"
+          >Connexion</a
+        >
+        <a
           id="proposer-soutien"
           v-show="this.$store.state.user.isConnected"
+          @click="changeModalPurposeVisibility()"
           class="text-black px-3 py-2 rounded-md text-base font-medium"
           >Proposer un soutien</a
+        >
+        <a
+          id="proposer-soutien"
+          @click="logout()"
+          v-show="this.$store.state.user.isConnected"
+          class="text-black px-3 py-2 rounded-md text-base font-medium"
+          >Deconnexion</a
         >
       </div>
     </div>
@@ -139,19 +155,28 @@
 </template>
 <script>
 export default {
+  data: function() {
+    return {
+      isMobileMenuOpen: true
+    }
+  },
+
   methods: {
     changeModalPurposeVisibility() {
       this.$store.commit("band/closeBand");
       this.$store.commit("modal/togglePurposeModal");
+      this.isMobileMenuOpen = false;
     },
 
     changeConnectionModalVisibility() {
       this.$store.commit("modal/toggleConnectionModal");
+      this.isMobileMenuOpen = false;
     },
 
     logout() {
       localStorage.removeItem("token");
       this.$store.commit("user/changeUserConnectionState");
+      this.isMobileMenuOpen = false;
       this.$store.commit(
         "band/toggleBandAsSuccess",
         "Vous vous êtes déconnecté"
