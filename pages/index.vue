@@ -45,7 +45,6 @@
                 v-model="moduleInput"
                 @change="filterCourse()"
               >
-                <option></option>
                 <option v-for="module in modules">
                   {{ module.module_name }}
                 </option>
