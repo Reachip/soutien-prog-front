@@ -63,7 +63,7 @@
           :subject="course.description"
         />
       </div>
-      <p v-if="!filteredCourses" class="text-center text-xl text-red-700 mt-12">Aucun soutien n'a été trouvé pour aujourd'hui ...</p>
+      <p v-if="!filteredCourses || filteredCourses.length === 0" class="text-center text-xl text-red-700 mt-12">Aucun soutien n'a été trouvé pour aujourd'hui ...</p>
     </main>
     <Footer />
   </div>
