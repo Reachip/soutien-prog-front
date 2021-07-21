@@ -24,8 +24,9 @@
                 <input
                   type="date"
                   class="border rounded bg-gray-100 border-gray-200 p-2 my-2"
-                  value="2020-03-22"
                   v-model="dateInput"
+                  :min="actualDate"
+                  :max="maxDate"
                   @change="filterCourse()"
                 />
               </div>
@@ -148,7 +149,9 @@ export default {
   data() {
     return {
       filteredCourses: null,
-      dateInput: null,
+      actualDate: moment().format("YYYY-MM-DD"),
+      maxDate:  moment().add(1, 'months').format("YYYY-MM-DD"),
+      dateInput: moment().format("YYYY-MM-DD"),
       modules: null,
       courses: null,
       moduleInput: null,
