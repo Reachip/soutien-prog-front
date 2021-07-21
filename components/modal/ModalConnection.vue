@@ -57,22 +57,47 @@
                     <label class="text-base">Nom d'utilisateur</label><br />
                     <input
                       type="text"
-                      placeholder=""
-                      name=""
-                      v-model="username"
                       class="bg-gray-200 p-2 rounded my-2 min-w-full"
+                      v-model="username"
                     />
+                    <span
+                        v-if="!$v.username.required || !$v.username.alpha"
+                        class="
+                        flex
+                        items-center
+                        font-medium
+                        tracking-wide
+                        text-red-500 text-xs
+                        mt-1
+                        ml-1
+                      "
+                    >
+                      Veuillez indiquer votre nom d'utilisateur
+                    </span>
                   </div>
 
                   <div class="m-4">
                     <label class="text-base">Mot de passe</label><br />
                     <input
                       type="password"
-                      placeholder=""
-                      name=""
                       v-model="password"
                       class="bg-gray-200 p-2 rounded my-2 min-w-full"
                     />
+
+                    <span
+                        v-if="!$v.password.required"
+                        class="
+                        flex
+                        items-center
+                        font-medium
+                        tracking-wide
+                        text-red-500 text-xs
+                        mt-1
+                        ml-1
+                      "
+                    >
+                      Veuillez indiquer votre mot de passe
+                    </span>
                   </div>
                 </div>
               </div>
@@ -140,6 +165,10 @@
 </template>
 <script>
 import jwt_decode from "jwt-decode";
+import {
+  required,
+  alpha,
+} from "vuelidate/lib/validators";
 
 export default {
   data: function () {
@@ -149,6 +178,13 @@ export default {
     };
   },
 
+  validations() {
+    return {
+      username: {required, alpha},
+      password: {required},
+    }
+  },
+
   methods: {
     changeModalConnectionVisibility() {
       this.$store.commit("modal/toggleConnectionModal");
@@ -156,27 +192,35 @@ export default {
     },
 
     async handleConnection() {
-      try {
-        const response = (
-          await this.$axios.post("/auth/", {
-            username: this.username,
-            password: this.password,
-          })
-        ).data;
+      this.$v.$touch() // checks all inputs
+      if (!this.$v.$invalid) { // if ANY fail validation
+        try {
+          const response = (
+              await this.$axios.post("/auth/", {
+                username: this.username,
+                password: this.password,
+              })
+          ).data;
 
-        jwt_decode(response.access);
+          jwt_decode(response.access);
 
-        // If the request is a success and the token is valid
-        this.$store.commit("modal/toggleConnectionModal");
-        this.$store.commit("user/changeUserConnectionState");
-        localStorage.setItem("token", response.access);
-        this.username = null;
-        this.password = null;
-        this.$store.commit("band/toggleBandAsSuccess", "Vous êtes connecté !");
-      } catch (_) {
+          // If the request is a success and the token is valid
+          this.$store.commit("modal/toggleConnectionModal");
+          this.$store.commit("user/changeUserConnectionState");
+          localStorage.setItem("token", response.access);
+          this.username = null;
+          this.password = null;
+          this.$store.commit("band/toggleBandAsSuccess", "Vous êtes connecté !");
+        } catch (_) {
+          this.$store.commit(
+              "band/toggleBandAsFail",
+              "Impossible de se connecter : Veuillez vérifer vos identifiants"
+          );
+        }
+      } else {
         this.$store.commit(
-          "band/toggleBandAsFail",
-          "Impossible de se connecter. Veuillez vérifer vos identifiants"
+            "band/toggleBandAsFail",
+            "Impossible de se connecter : Veuillez modifier les champs incorrectes."
         );
       }
     },
