@@ -62,7 +62,7 @@
                       class="bg-gray-200 p-2 rounded my-2 min-w-full"
                     />
                     <span
-                      v-if="msg.username"
+                      v-if="$v.username.required || $v.username.alpha"
                       class="
                         flex
                         items-center
@@ -73,7 +73,7 @@
                         ml-1
                       "
                     >
-                      {{ msg.username }}
+                      Veuillez renseigner un nom d'utilisateur valide
                     </span>
                   </div>
                   <div class="m-4">
@@ -85,7 +85,7 @@
                       class="bg-gray-200 p-2 rounded my-2 min-w-full"
                     />
                     <span
-                      v-if="msg.email"
+                      v-if="!$v.email.required || !$v.email.email"
                       class="
                         flex
                         items-center
@@ -96,7 +96,7 @@
                         ml-1
                       "
                     >
-                      {{ msg.email }}
+                      Veuillez renseigner une adresse mail valide
                     </span>
                   </div>
                 </div>
@@ -165,48 +165,21 @@
   </transition>
 </template>
 <script>
+import {alpha, required, email} from "vuelidate/lib/validators";
+
 export default {
   data: function () {
     return {
       username: null,
       email: null,
-      msg: [],
     };
   },
 
-  mounted() {
-    this.invokeCheckers();
-  },
 
   methods: {
     changeModalPurposeVisibility() {
       this.$store.commit("modal/toggleParticipationModal");
       this.$store.commit("band/closeBand");
-    },
-
-    invokeCheckers() {
-      this.usernameChecker(this.email);
-      this.emailChecker(this.username);
-    },
-
-    usernameChecker(value) {
-      if (value) this.msg["username"] = "";
-      else
-        this.msg["username"] =
-          "Veuillez indiquer votre prénom ainsi que votre nom";
-    },
-
-    emailChecker(value) {
-      if (value) {
-        const regex =
-          /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-        if (regex.test(String(this.email).toLowerCase())) {
-          this.msg["email"] = "";
-        } else {
-          this.msg["email"] = "Veuillez indiquer une adresse mail valide";
-        }
-      } else this.msg["email"] = "Veuillez indiquer une adresse mail";
     },
 
     async participateHandler() {
@@ -233,14 +206,11 @@ export default {
     },
   },
 
-  watch: {
-    username(value) {
-      this.usernameChecker(value);
-    },
-
-    email(value) {
-      this.emailChecker(value);
-    },
+  validations() {
+    return {
+      username: {required, alpha},
+      email: {required, email},
+    }
   },
 };
 </script>
