@@ -57,12 +57,11 @@
                     <label class="text-base">Nom et prénom</label><br />
                     <input
                       type="text"
-                      placeholder=""
                       v-model="username"
                       class="bg-gray-200 p-2 rounded my-2 min-w-full"
                     />
                     <span
-                      v-if="$v.username.required || $v.username.alpha"
+                      v-if="!$v.username.required || !$v.username.alpha"
                       class="
                         flex
                         items-center
@@ -183,7 +182,9 @@ export default {
     },
 
     async participateHandler() {
-      if (this.username && this.email) {
+      this.$v.$touch()
+
+      if (!this.$v.invalid) {
         try {
           await this.$axios.post("/participant/", {
             course: this.$store.state.modalParticipation.selectedCourse,

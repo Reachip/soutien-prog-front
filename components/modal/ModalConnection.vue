@@ -192,8 +192,8 @@ export default {
     },
 
     async handleConnection() {
-      this.$v.$touch() // checks all inputs
-      if (!this.$v.$invalid) { // if ANY fail validation
+      this.$v.$touch()
+      if (!this.$v.$invalid) {
         try {
           const response = (
               await this.$axios.post("/auth/", {
