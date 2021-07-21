@@ -63,7 +63,7 @@
                       class="bg-gray-200 p-2 rounded my-2"
                     />
                     <span
-                      v-if="msg.courseName"
+                      v-if="!$v.course_name.required"
                       class="
                         flex
                         items-center
@@ -74,7 +74,7 @@
                         ml-1
                       "
                     >
-                      {{ msg.courseName }}
+                      Veuillez indiquer un nom pour ce soutien
                     </span>
                   </div>
 
@@ -95,7 +95,7 @@
                       class="bg-gray-200 p-2 rounded my-2"
                     />
                     <span
-                      v-if="msg.startingAt"
+                      v-if="!$v.starting_at_time.required || !$v.starting_at_date.required"
                       class="
                         flex
                         items-center
@@ -106,7 +106,7 @@
                         ml-1
                       "
                     >
-                      {{ msg.startingAt }}
+                      Veuillez indiquer une heure et une date de début
                     </span>
                   </div>
 
@@ -126,7 +126,7 @@
                       class="bg-gray-200 p-2 rounded my-2"
                     />
                     <span
-                      v-if="msg.endingAt"
+                      v-if="!$v.ending_at_time.required || !$v.ending_at_date.required"
                       class="
                         flex
                         items-center
@@ -137,7 +137,7 @@
                         ml-1
                       "
                     >
-                      {{ msg.endingAt }}
+                      Veuillez indiquer une heure et une date de fin
                     </span>
                   </div>
 
@@ -162,7 +162,7 @@
                       </option>
                     </select>
                     <span
-                      v-if="msg.moduleName"
+                      v-if="!$v.moduleName.required"
                       class="
                         flex
                         items-center
@@ -173,7 +173,7 @@
                         ml-1
                       "
                     >
-                      {{ msg.moduleName }}
+                      Veuillez indiquer un module pour ce soutien
                     </span>
                   </div>
 
@@ -187,7 +187,7 @@
                       cols="35"
                     ></textarea>
                     <span
-                      v-if="msg.description"
+                      v-if="!$v.description.required || !$v.description.minLength"
                       class="
                         flex
                         items-center
@@ -198,7 +198,7 @@
                         ml-1
                       "
                     >
-                      {{ msg.description }}
+                      Veuillez indiquer une description pour ce soutien avec un minimum de 10 caractères
                     </span>
                   </div>
 
@@ -211,7 +211,7 @@
                       class="bg-gray-200 p-2 rounded my-2"
                     />
                     <span
-                      v-if="msg.linkTo"
+                      v-if="!$v.linkTo.mustBeVisioConferenceLink"
                       class="
                         flex
                         items-center
@@ -222,7 +222,8 @@
                         ml-1
                       "
                     >
-                      {{ msg.linkTo }}
+                      Veuillez indiquer lien vers la visioconférence depuis les sites :
+                      Google Meet, Microsoft Teams, Zoom ou Discord
                     </span>
                   </div>
                 </div>
@@ -293,144 +294,64 @@
 <script>
 import moment from "moment";
 import jwtDecode from "jwt-decode";
+import {alpha, required, minLength} from "vuelidate/lib/validators";
+import mustBeVisioConferenceLink from "@/validator/mustBeVisioConferenceLink";
 
 export default {
-  mounted() {
-    this.invokeCheckers();
-  },
-
   methods: {
     togglePurposeModal() {
       this.$store.commit("modal/togglePurposeModal");
       this.$store.commit("band/closeBand");
     },
 
-    errorMessageHandlerIfValueIsNull(value, message) {
-      if (value) this.msg["courseName"] = "";
-      else this.msg["courseName"] = "Veuillez indiquer un nom pour de soutien";
-    },
-
     async postNewCourse() {
-      this.invokeCheckers();
+      this.$v.$touch()
 
-      const config = {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      };
+      if (!this.$v.invalid) {
+        const config = {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        };
 
-      const data = {
-        description: this.description,
-        ending_at: moment(
-          `${this.ending_at_date} ${this.ending_at_time}`,
-          "DD-MM-YYYY HH:mm"
-        ).format("YYYY-MM-DDTHH:mm:ss.SSS"),
-        starting_at: moment(
-          `${this.starting_at_date} ${this.starting_at_time}`,
-          "DD-MM-YYYY HH:mm"
-        ).format("YYYY-MM-DDTHH:mm:ss.SSS"),
-        teacher: jwtDecode(localStorage.getItem("token")).username,
-        school_module: this.moduleName,
-        course_name: this.course_name,
-        link_to: this.linkTo,
-      };
+        const data = {
+          description: this.description,
+          ending_at: moment(
+              `${this.ending_at_date} ${this.ending_at_time}`,
+              "DD-MM-YYYY HH:mm"
+          ).format("YYYY-MM-DDTHH:mm:ss.SSS"),
+          starting_at: moment(
+              `${this.starting_at_date} ${this.starting_at_time}`,
+              "DD-MM-YYYY HH:mm"
+          ).format("YYYY-MM-DDTHH:mm:ss.SSS"),
+          teacher: jwtDecode(localStorage.getItem("token")).username,
+          school_module: this.moduleName,
+          course_name: this.course_name,
+          link_to: this.linkTo,
+        };
 
-      try {
-        await this.$axios.post("/course/", data, config);
-        this.$store.commit("modal/togglePurposeModal");
-        this.$store.commit(
-          "band/toggleBandAsSuccess",
-          "Votre cours a bien été enregistré"
-        );
-      } catch (_) {
-        this.$store.commit(
-          "band/toggleBandAsFail",
-          "Impossible de créer votre cours"
-        );
-      }
-    },
-
-    invokeCheckers() {
-      this.startingAtDateChecker();
-      this.startingAtTimeChecker();
-      this.courseNameChecker();
-      this.endingAtDateChecker();
-      this.endingAtTimeChecker();
-      this.startingAtTimeChecker();
-      this.startingAtDateChecker();
-      this.moduleNameChecker();
-      this.descriptionChecker();
-    },
-
-    startingAtTimeChecker(value) {
-      if (value) this.msg["startingAt"] = "";
-      else this.msg["startingAt"] = "Veuillez indiquer une heure de début";
-    },
-
-    courseNameChecker(value) {
-      if (value) this.msg["courseName"] = "";
-      else this.msg["courseName"] = "Veuillez indiquer un nom pour ce soutien";
-    },
-
-    endingAtDateChecker(value) {
-      if (value) this.msg["endingAt"] = "";
-      else this.msg["endingAt"] = "Veuillez indiquer une date de fin";
-    },
-
-    endingAtTimeChecker(value) {
-      if (value) this.msg["endingAt"] = "";
-      else this.msg["endingAt"] = "Veuillez indiquer une heure de fin";
-    },
-
-    startingAtDateChecker(value) {
-      if (value) this.msg["startingAt"] = "";
-      else this.msg["startingAt"] = "Veuillez indiquer une date de début";
-    },
-
-    moduleNameChecker(value) {
-      if (value) this.msg["moduleName"] = "";
-      else
-        this.msg["moduleName"] =
-          "Veuillez séléctionner un module pour ce soutien";
-    },
-
-    linkToChecker(value) {
-      if (value) {
-        let disc,
-          zoom,
-          teams,
-          meet =
-            ("https://discord.gg/",
-            "https://us05web.zoom.us/",
-            "https://teams.microsoft.com/",
-            "https://meet.google.com/");
-
-        if (
-          value.startsWith(zoom) ||
-          value.startsWith(teams) ||
-          value.startsWith(meet) ||
-          value.startsWith(disc)
-        ) {
-          this.msg["linkTo"] = "";
-        } else {
-          this.msg["linkTo"] =
-            "Lien vers la visioconférence invalide : Les platformes acceptées sont Discord, Google Meet, Zoom ou Microsoft Teams";
+        try {
+          await this.$axios.post("/course/", data, config);
+          this.$store.commit("modal/togglePurposeModal");
+          this.$store.commit(
+              "band/toggleBandAsSuccess",
+              "Votre cours a bien été enregistré"
+          );
+        } catch (_) {
+          this.$store.commit(
+              "band/toggleBandAsFail",
+              "Impossible de créer votre cours : Une erreur inconnu a été invoquée"
+          );
         }
       } else {
-        this.msg["linkTo"] =
-          "Veuillez renseigner un lien pour la visio de ce soutien";
+        this.$store.commit(
+            "band/toggleBandAsFail",
+            "Impossible de créer votre cours : Veuillez vérfier les champs saisies"
+        );
       }
-    },
-
-    descriptionChecker(value) {
-      if (value) this.msg["description"] = "";
-      else
-        this.msg["description"] =
-          "Veuillez renseigner un description pour ce soutien";
     },
   },
 
   data: function () {
     return {
-      msg: [],
       course_name: null,
       ending_at_date: null,
       ending_at_time: null,
@@ -442,38 +363,17 @@ export default {
     };
   },
 
-  watch: {
-    linkTo(value) {
-      this.linkToChecker(value);
-    },
-
-    course_name(value) {
-      this.courseNameChecker(value);
-    },
-
-    ending_at_date(value) {
-      this.endingAtDateChecker(value);
-    },
-
-    ending_at_time(value) {
-      this.endingAtTimeChecker(value);
-    },
-
-    starting_at_date(value) {
-      this.startingAtDateChecker(value);
-    },
-
-    starting_at_time(value) {
-      this.startingAtTimeChecker(value);
-    },
-
-    moduleName(value) {
-      this.moduleNameChecker(value);
-    },
-
-    description(value) {
-      this.descriptionChecker(value);
-    },
-  },
+  validations() {
+    return {
+      course_name: {required, alpha},
+      ending_at_date: {required},
+      ending_at_time: {required},
+      starting_at_date: {required},
+      starting_at_time: {required},
+      moduleName: {required},
+      description: {required, minLength: minLength(10)},
+      linkTo: {mustBeVisioConferenceLink}
+    }
+  }
 };
 </script>
