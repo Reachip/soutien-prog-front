@@ -14,7 +14,9 @@
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.1",
     "nuxt": "^2.15.3",
-    "nuxt-material-design-icons": "^1.0.4"
+    "nuxt-material-design-icons": "^1.0.4",
+    "vue": "^2.6.14",
+    "vuelidate": "^0.7.5"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^4.0.1",
