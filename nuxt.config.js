@@ -57,6 +57,6 @@ export default {
   axios: {
     baseURL: process.env.BASE_URL || 'http://localhost:8000/api',
     proxyHeaders: false,
-    credentials: false
+    credentials: true
   }
 }
