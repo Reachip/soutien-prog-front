@@ -207,7 +207,6 @@ export default {
           // If the request is a success and the token is valid
           this.$store.commit("modal/toggleConnectionModal");
           this.$store.commit("user/changeUserConnectionState");
-          localStorage.setItem("token", response.access);
           this.username = null;
           this.password = null;
           this.$store.commit("band/toggleBandAsSuccess", "Vous êtes connecté !");
