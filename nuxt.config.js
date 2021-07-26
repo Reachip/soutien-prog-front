@@ -11,7 +11,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Soutien Prog',
+    title: 'SoutienProg - Proposition de soutien par les étudiants pour les étudiants',
     htmlAttrs: {
       lang: 'fr'
     },
@@ -21,7 +21,7 @@ export default {
       { hid: 'description', name: 'description', content: 'Single page app permettant de proposer des cours de soutiens organisées par des étudiants pour des étudiants à l\'IUT d\'Annecy.' },
       { hid: 'og:image', property: 'og:image', content: '/logo.png' },
       { hid: 'og:url', property: 'og:url', content: 'https://soutienprog-acy.netlify.app' },
-      { hid: 'og:title', property: 'og:title', content: 'Soutien prog' },
+      { hid: 'og:title', property: 'og:title', content: 'SoutienProg' },
       { hid: 'og:description', property: 'og:description', content: 'Single page app permettant de proposer des cours de soutiens organisées par des étudiants pour des étudiants à l\'IUT d\'Annecy.' },
     ],
     link: [
