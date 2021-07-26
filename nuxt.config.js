@@ -18,10 +18,14 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' }
+      { hid: 'description', name: 'description', content: 'Single page app permettant de proposer des cours de soutiens organisées par des étudiants pour des étudiants à l\'IUT d\'Annecy.' },
+      { hid: 'og:image', property: 'og:image', content: '/logo.png' },
+      { hid: 'og:url', property: 'og:url', content: 'https://soutienprog-acy.netlify.app' },
+      { hid: 'og:title', property: 'og:title', content: 'Soutien prog' },
+      { hid: 'og:description', property: 'og:description', content: 'Single page app permettant de proposer des cours de soutiens organisées par des étudiants pour des étudiants à l\'IUT d\'Annecy.' },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/png', href: '/logo.png' }
     ]
   },
 
