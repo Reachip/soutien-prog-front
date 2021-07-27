@@ -1,10 +1,10 @@
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  ssr: false,
+  ssr: true,
 
   // Target: https://go.nuxtjs.dev/config-target
-  target: 'static',
+  target: 'server',
   router: {
     base: '/'
   },
@@ -59,7 +59,7 @@ export default {
   },
 
   axios: {
-    baseURL: process.env.BASE_URL || 'http://localhost:8000/api',
+    baseURL: process.env.BASE_URL || 'http://localhost/api',
     proxyHeaders: false,
     credentials: true
   }
