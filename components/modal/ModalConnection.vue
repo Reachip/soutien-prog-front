@@ -61,8 +61,8 @@
                       v-model="username"
                     />
                     <span
-                        v-if="!$v.username.required || !$v.username.alpha"
-                        class="
+                      v-if="!$v.username.required || !$v.username.alpha"
+                      class="
                         flex
                         items-center
                         font-medium
@@ -85,8 +85,8 @@
                     />
 
                     <span
-                        v-if="!$v.password.required"
-                        class="
+                      v-if="!$v.password.required"
+                      class="
                         flex
                         items-center
                         font-medium
@@ -165,10 +165,7 @@
 </template>
 <script>
 import jwt_decode from "jwt-decode";
-import {
-  required,
-  alpha,
-} from "vuelidate/lib/validators";
+import { required, alpha } from "vuelidate/lib/validators";
 
 export default {
   data: function () {
@@ -180,9 +177,9 @@ export default {
 
   validations() {
     return {
-      username: {required, alpha},
-      password: {required},
-    }
+      username: { required, alpha },
+      password: { required },
+    };
   },
 
   methods: {
@@ -192,14 +189,14 @@ export default {
     },
 
     async handleConnection() {
-      this.$v.$touch()
+      this.$v.$touch();
       if (!this.$v.$invalid) {
         try {
           const response = (
-              await this.$axios.post("/auth/", {
-                username: this.username,
-                password: this.password,
-              })
+            await this.$axios.post("/auth/", {
+              username: this.username,
+              password: this.password,
+            })
           ).data;
 
           jwt_decode(response.access);
@@ -209,17 +206,20 @@ export default {
           this.$store.commit("user/changeUserConnectionState");
           this.username = null;
           this.password = null;
-          this.$store.commit("band/toggleBandAsSuccess", "Vous êtes connecté !");
+          this.$store.commit(
+            "band/toggleBandAsSuccess",
+            "Vous êtes connecté !"
+          );
         } catch (_) {
           this.$store.commit(
-              "band/toggleBandAsFail",
-              "Impossible de se connecter : Veuillez vérifer vos identifiants"
+            "band/toggleBandAsFail",
+            "Impossible de se connecter : Veuillez vérifer vos identifiants"
           );
         }
       } else {
         this.$store.commit(
-            "band/toggleBandAsFail",
-            "Impossible de se connecter : Veuillez modifier les champs incorrectes."
+          "band/toggleBandAsFail",
+          "Impossible de se connecter : Veuillez modifier les champs incorrectes."
         );
       }
     },

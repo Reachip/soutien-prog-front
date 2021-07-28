@@ -164,7 +164,7 @@
   </transition>
 </template>
 <script>
-import {alpha, required, email} from "vuelidate/lib/validators";
+import { alpha, required, email } from "vuelidate/lib/validators";
 
 export default {
   data: function () {
@@ -174,7 +174,6 @@ export default {
     };
   },
 
-
   methods: {
     changeModalPurposeVisibility() {
       this.$store.commit("modal/toggleParticipationModal");
@@ -182,7 +181,7 @@ export default {
     },
 
     async participateHandler() {
-      this.$v.$touch()
+      this.$v.$touch();
 
       if (!this.$v.invalid) {
         try {
@@ -209,9 +208,9 @@ export default {
 
   validations() {
     return {
-      username: {required, alpha},
-      email: {required, email},
-    }
+      username: { required, alpha },
+      email: { required, email },
+    };
   },
 };
 </script>

@@ -95,7 +95,10 @@
                       class="bg-gray-200 p-2 rounded my-2"
                     />
                     <span
-                      v-if="!$v.starting_at_time.required || !$v.starting_at_date.required"
+                      v-if="
+                        !$v.starting_at_time.required ||
+                        !$v.starting_at_date.required
+                      "
                       class="
                         flex
                         items-center
@@ -126,7 +129,10 @@
                       class="bg-gray-200 p-2 rounded my-2"
                     />
                     <span
-                      v-if="!$v.ending_at_time.required || !$v.ending_at_date.required"
+                      v-if="
+                        !$v.ending_at_time.required ||
+                        !$v.ending_at_date.required
+                      "
                       class="
                         flex
                         items-center
@@ -187,7 +193,9 @@
                       cols="35"
                     ></textarea>
                     <span
-                      v-if="!$v.description.required || !$v.description.minLength"
+                      v-if="
+                        !$v.description.required || !$v.description.minLength
+                      "
                       class="
                         flex
                         items-center
@@ -198,7 +206,8 @@
                         ml-1
                       "
                     >
-                      Veuillez indiquer une description pour ce soutien avec un minimum de 10 caractères
+                      Veuillez indiquer une description pour ce soutien avec un
+                      minimum de 10 caractères
                     </span>
                   </div>
 
@@ -222,8 +231,8 @@
                         ml-1
                       "
                     >
-                      Veuillez indiquer lien vers la visioconférence depuis les sites :
-                      Google Meet, Microsoft Teams, Zoom ou Discord
+                      Veuillez indiquer lien vers la visioconférence depuis les
+                      sites : Google Meet, Microsoft Teams, Zoom ou Discord
                     </span>
                   </div>
                 </div>
@@ -294,7 +303,7 @@
 <script>
 import moment from "moment";
 import jwtDecode from "jwt-decode";
-import {alpha, required, minLength} from "vuelidate/lib/validators";
+import { alpha, required, minLength } from "vuelidate/lib/validators";
 import mustBeVisioConferenceLink from "@/validator/mustBeVisioConferenceLink";
 
 export default {
@@ -305,7 +314,7 @@ export default {
     },
 
     async postNewCourse() {
-      this.$v.$touch()
+      this.$v.$touch();
 
       if (!this.$v.invalid) {
         const config = {
@@ -315,12 +324,12 @@ export default {
         const data = {
           description: this.description,
           ending_at: moment(
-              `${this.ending_at_date} ${this.ending_at_time}`,
-              "DD-MM-YYYY HH:mm"
+            `${this.ending_at_date} ${this.ending_at_time}`,
+            "DD-MM-YYYY HH:mm"
           ).format("YYYY-MM-DDTHH:mm:ss.SSS"),
           starting_at: moment(
-              `${this.starting_at_date} ${this.starting_at_time}`,
-              "DD-MM-YYYY HH:mm"
+            `${this.starting_at_date} ${this.starting_at_time}`,
+            "DD-MM-YYYY HH:mm"
           ).format("YYYY-MM-DDTHH:mm:ss.SSS"),
           teacher: jwtDecode(localStorage.getItem("token")).username,
           school_module: this.moduleName,
@@ -332,19 +341,19 @@ export default {
           await this.$axios.post("/course/", data, config);
           this.$store.commit("modal/togglePurposeModal");
           this.$store.commit(
-              "band/toggleBandAsSuccess",
-              "Votre cours a bien été enregistré"
+            "band/toggleBandAsSuccess",
+            "Votre cours a bien été enregistré"
           );
         } catch (_) {
           this.$store.commit(
-              "band/toggleBandAsFail",
-              "Impossible de créer votre cours : Une erreur inconnu a été invoquée"
+            "band/toggleBandAsFail",
+            "Impossible de créer votre cours : Une erreur inconnu a été invoquée"
           );
         }
       } else {
         this.$store.commit(
-            "band/toggleBandAsFail",
-            "Impossible de créer votre cours : Veuillez vérfier les champs saisies"
+          "band/toggleBandAsFail",
+          "Impossible de créer votre cours : Veuillez vérfier les champs saisies"
         );
       }
     },
@@ -365,15 +374,15 @@ export default {
 
   validations() {
     return {
-      course_name: {required, alpha},
-      ending_at_date: {required},
-      ending_at_time: {required},
-      starting_at_date: {required},
-      starting_at_time: {required},
-      moduleName: {required},
-      description: {required, minLength: minLength(10)},
-      linkTo: {mustBeVisioConferenceLink}
-    }
-  }
+      course_name: { required, alpha },
+      ending_at_date: { required },
+      ending_at_time: { required },
+      starting_at_date: { required },
+      starting_at_time: { required },
+      moduleName: { required },
+      description: { required, minLength: minLength(10) },
+      linkTo: { mustBeVisioConferenceLink },
+    };
+  },
 };
 </script>

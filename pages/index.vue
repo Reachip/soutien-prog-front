@@ -83,15 +83,14 @@ import moment from "moment";
 
 export default {
   async mounted() {
-    
     try {
-      await this.$axios.post("/verify/")
-      this.$store.commit("user/changeUserConnectionState")
+      await this.$axios.post("/verify/");
+      this.$store.commit("user/changeUserConnectionState");
     } catch {
-      // User is not authenticated, 
+      // User is not authenticated,
       // We do not change the user connection state.
     }
-    
+
     this.$store.commit(
       "band/toggleBandAsInfo",
       "Bienvene sur la version experimental de SoutienProg. Vous pouvez organiser des cours en faisant une demande d'inscription à Rached Mejri."
@@ -156,7 +155,7 @@ export default {
     return {
       filteredCourses: null,
       actualDate: moment().format("YYYY-MM-DD"),
-      maxDate:  moment().add(1, 'months').format("YYYY-MM-DD"),
+      maxDate: moment().add(1, "months").format("YYYY-MM-DD"),
       dateInput: moment().format("YYYY-MM-DD"),
       modules: null,
       courses: null,

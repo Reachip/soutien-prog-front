@@ -174,7 +174,7 @@ export default {
     },
 
     async logout() {
-      await this.$axios.post("/logout/")      
+      await this.$axios.post("/logout/");
       this.$store.commit("user/changeUserConnectionState");
       this.isMobileMenuOpen = false;
       this.$store.commit(
