@@ -59,11 +59,11 @@
                     <input
                       type="text"
                       placeholder=""
-                      v-model="course_name"
+                      v-model="courseName"
                       class="bg-gray-200 p-2 rounded my-2"
                     />
                     <span
-                      v-if="!$v.course_name.required"
+                      v-if="!$v.courseName.required"
                       class="
                         flex
                         items-center
@@ -85,19 +85,19 @@
                     <input
                       type="date"
                       placeholder=""
-                      v-model="starting_at_date"
+                      v-model="startingAtDate"
                       class="bg-gray-200 p-2 rounded my-2"
                     />
                     <input
                       type="time"
                       placeholder=""
-                      v-model="starting_at_time"
+                      v-model="startingAtTime"
                       class="bg-gray-200 p-2 rounded my-2"
                     />
                     <span
                       v-if="
-                        !$v.starting_at_time.required ||
-                        !$v.starting_at_date.required
+                        !$v.startingAtTime.required ||
+                        !$v.startingAtDate.required
                       "
                       class="
                         flex
@@ -119,19 +119,19 @@
                     <input
                       type="date"
                       placeholder=""
-                      v-model="ending_at_date"
+                      v-model="endingAtDate"
                       class="bg-gray-200 p-2 rounded my-2"
                     />
                     <input
                       type="time"
                       placeholder=""
-                      v-model="ending_at_time"
+                      v-model="endingAtTime"
                       class="bg-gray-200 p-2 rounded my-2"
                     />
                     <span
                       v-if="
-                        !$v.ending_at_time.required ||
-                        !$v.ending_at_date.required
+                        !$v.endingAtTime.required ||
+                        !$v.endingAtDate.required
                       "
                       class="
                         flex
@@ -324,16 +324,16 @@ export default {
         const data = {
           description: this.description,
           ending_at: moment(
-            `${this.ending_at_date} ${this.ending_at_time}`,
+            `${this.endingAtDate} ${this.endingAtTime}`,
             "DD-MM-YYYY HH:mm"
           ).format("YYYY-MM-DDTHH:mm:ss.SSS"),
           starting_at: moment(
-            `${this.starting_at_date} ${this.starting_at_time}`,
+            `${this.startingAtDate} ${this.startingAtTime}`,
             "DD-MM-YYYY HH:mm"
           ).format("YYYY-MM-DDTHH:mm:ss.SSS"),
           teacher: jwtDecode(localStorage.getItem("token")).username,
           school_module: this.moduleName,
-          course_name: this.course_name,
+          courseName: this.courseName,
           link_to: this.linkTo,
         };
 
@@ -361,11 +361,11 @@ export default {
 
   data: function () {
     return {
-      course_name: null,
-      ending_at_date: null,
-      ending_at_time: null,
-      starting_at_date: null,
-      starting_at_time: null,
+      courseName: null,
+      endingAtDate: null,
+      endingAtTime: null,
+      startingAtDate: null,
+      startingAtTime: null,
       moduleName: null,
       description: null,
       linkTo: null,
@@ -374,11 +374,11 @@ export default {
 
   validations() {
     return {
-      course_name: { required, alpha },
-      ending_at_date: { required },
-      ending_at_time: { required },
-      starting_at_date: { required },
-      starting_at_time: { required },
+      courseName: { required, alpha },
+      endingAtDate: { required },
+      endingAtTime: { required },
+      startingAtDate: { required },
+      startingAtTime: { required },
       moduleName: { required },
       description: { required, minLength: minLength(10) },
       linkTo: { mustBeVisioConferenceLink },
