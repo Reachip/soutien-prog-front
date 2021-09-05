@@ -302,7 +302,6 @@
 </template>
 <script>
 import moment from "moment";
-import jwtDecode from "jwt-decode";
 import { alpha, required, minLength } from "vuelidate/lib/validators";
 import mustBeVisioConferenceLink from "@/validator/mustBeVisioConferenceLink";
 
@@ -317,38 +316,35 @@ export default {
       this.$v.$touch();
 
       if (!this.$v.invalid) {
-        const config = {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        };
-
         const data = {
           description: this.description,
           ending_at: moment(
             `${this.endingAtDate} ${this.endingAtTime}`,
-            "DD-MM-YYYY HH:mm"
-          ).format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            "YYYY-MM-DD HH:mm"
+          ).format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
           starting_at: moment(
             `${this.startingAtDate} ${this.startingAtTime}`,
-            "DD-MM-YYYY HH:mm"
-          ).format("YYYY-MM-DDTHH:mm:ss.SSS"),
-          teacher: jwtDecode(localStorage.getItem("token")).username,
+            "YYYY-MM-DD HH:mm"
+          ).format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
+          teacher: (await this.$axios.get("/user/")).data.username,
           school_module: this.moduleName,
-          courseName: this.courseName,
+          course_name: this.courseName,
           link_to: this.linkTo,
         };
 
         try {
-          await this.$axios.post("/course/", data, config);
+          await this.$axios.post("/course/", data);
           this.$store.commit("modal/togglePurposeModal");
           this.$store.commit(
             "band/toggleBandAsSuccess",
             "Votre cours a bien été enregistré"
           );
-        } catch (_) {
+        } catch (why) {
           this.$store.commit(
             "band/toggleBandAsFail",
             "Impossible de créer votre cours : Une erreur inconnu a été invoquée"
           );
+          console.error(why)
         }
       } else {
         this.$store.commit(
