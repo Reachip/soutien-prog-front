@@ -1,9 +1,5 @@
 <template>
   <div>
-    <Navbar />
-    <ModalParticipation />
-    <ModalConnection />
-    <ModalPurpose />
     <div class="bg-green-600 bg-yellow-600"></div>
     <div class="flex flex-col h-screen justify-between">
       <main>
@@ -82,21 +78,6 @@
 import moment from "moment";
 
 export default {
-  async mounted() {
-    try {
-      await this.$axios.post("/verify/");
-      this.$store.commit("user/changeUserConnectionState");
-    } catch {
-      // User is not authenticated,
-      // We do not change the user connection state.
-    }
-
-    this.$store.commit(
-      "band/toggleBandAsInfo",
-      "Bienvene sur la version experimental de SoutienProg. Vous pouvez organiser des cours en faisant une demande d'inscription à Rached Mejri."
-    );
-  },
-
   async beforeMount() {
     this.courses = (await this.$axios.get("/course/")).data;
 
