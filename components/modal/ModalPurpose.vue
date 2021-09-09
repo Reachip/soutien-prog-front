@@ -94,6 +94,7 @@
                       v-model="startingAtTime"
                       class="bg-gray-200 p-2 rounded my-2"
                     />
+                    <p class="text-blue-500" @click="setNowFor('startingAtDate', 'startingAtTime')">Maintenant</p>
                     <span
                       v-if="
                         (!$v.startingAtTime.required ||
@@ -128,6 +129,7 @@
                       v-model="endingAtTime"
                       class="bg-gray-200 p-2 rounded my-2"
                     />
+                    <p class="text-blue-500" @click="setNowFor('endingAtDate', 'endingAtTime')">Maintenant</p>
                     <span
                       v-if="
                         (!$v.endingAtTime.required ||
@@ -312,6 +314,11 @@ export default {
       this.$store.commit("band/closeBand");
     },
 
+    setNowFor(date, hour) {
+      this._data[date] = moment().format("YYYY-MM-DD")
+      this._data[hour] = moment().format("HH:mm")
+    },
+
     async postNewCourse() {
       this.$v.$touch();
 
@@ -382,3 +389,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+  p:hover {
+    cursor: pointer;
+  }
+</style>
