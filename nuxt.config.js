@@ -63,7 +63,7 @@ export default {
   build: {},
 
   axios: {
-    baseURL: process.env.BASE_URL || "http://localhost/api",
+    baseURL: process.env.BASE_URL || "http://localhost:8000/api",
     proxyHeaders: false,
     credentials: true,
   },
