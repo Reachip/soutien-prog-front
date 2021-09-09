@@ -20,7 +20,7 @@ export default {
 
     this.$store.commit(
       "band/toggleBandAsInfo",
-      "Bienvene sur la version experimental de SoutienProg. Vous pouvez organiser des cours en faisant une demande d'inscription à Rached Mejri."
+      "Bienvene sur la version experimentale de SoutienProg. Vous pouvez organiser des cours en faisant une demande d'inscription à Rached Mejri."
     );
   },
 }
