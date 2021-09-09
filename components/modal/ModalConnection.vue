@@ -61,7 +61,7 @@
                       v-model="username"
                     />
                     <span
-                      v-if="!$v.username.required || !$v.username.alpha"
+                      v-if="(!$v.username.required || !$v.username.alpha) && username"
                       class="
                         flex
                         items-center
@@ -85,7 +85,7 @@
                     />
 
                     <span
-                      v-if="!$v.password.required"
+                      v-if="!$v.password.required && password"
                       class="
                         flex
                         items-center

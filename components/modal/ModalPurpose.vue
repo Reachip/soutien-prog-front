@@ -63,7 +63,7 @@
                       class="bg-gray-200 p-2 rounded my-2"
                     />
                     <span
-                      v-if="!$v.courseName.required"
+                      v-if="!$v.courseName.required && courseName"
                       class="
                         flex
                         items-center
@@ -96,8 +96,8 @@
                     />
                     <span
                       v-if="
-                        !$v.startingAtTime.required ||
-                        !$v.startingAtDate.required
+                        (!$v.startingAtTime.required ||
+                        !$v.startingAtDate.required) && startingAtDate
                       "
                       class="
                         flex
@@ -130,8 +130,8 @@
                     />
                     <span
                       v-if="
-                        !$v.endingAtTime.required ||
-                        !$v.endingAtDate.required
+                        (!$v.endingAtTime.required ||
+                        !$v.endingAtDate.required) && endingAtDate
                       "
                       class="
                         flex
@@ -168,7 +168,7 @@
                       </option>
                     </select>
                     <span
-                      v-if="!$v.moduleName.required"
+                      v-if="!$v.moduleName.required && moduleName"
                       class="
                         flex
                         items-center
@@ -194,7 +194,7 @@
                     ></textarea>
                     <span
                       v-if="
-                        !$v.description.required || !$v.description.minLength
+                        (!$v.description.required || !$v.description.minLength) && description
                       "
                       class="
                         flex
@@ -220,7 +220,7 @@
                       class="bg-gray-200 p-2 rounded my-2"
                     />
                     <span
-                      v-if="!$v.linkTo.mustBeVisioConferenceLink"
+                      v-if="!$v.linkTo.mustBeVisioConferenceLink && mustBeVisioConferenceLink"
                       class="
                         flex
                         items-center

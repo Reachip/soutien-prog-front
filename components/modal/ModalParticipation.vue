@@ -61,7 +61,7 @@
                       class="bg-gray-200 p-2 rounded my-2 min-w-full"
                     />
                     <span
-                      v-if="!$v.username.required || !$v.username.alpha"
+                      v-if="(!$v.username.required || !$v.username.alpha) && username"
                       class="
                         flex
                         items-center
@@ -84,7 +84,7 @@
                       class="bg-gray-200 p-2 rounded my-2 min-w-full"
                     />
                     <span
-                      v-if="!$v.email.required || !$v.email.email"
+                      v-if="(!$v.email.required || !$v.email.email) && email"
                       class="
                         flex
                         items-center
@@ -167,6 +167,10 @@
 import { alpha, required, email } from "vuelidate/lib/validators";
 
 export default {
+  mounted() {
+    console.log(this.email)
+  },
+
   data: function () {
     return {
       username: null,
@@ -193,7 +197,7 @@ export default {
 
           this.$store.commit(
             "band/toggleBandAsSuccess",
-            "Votre demande de participation a bien été enregistré. Vous recevrez le lien vers la visioconférence par mail et serait notifié 5 minutes avant le début du soutien."
+            "Votre demande de participation a bien été enregistré. Vous recevrez le lien vers la visioconférence par mail et serez notifié 10 minutes avant le début du soutien."
           );
           this.$store.commit("modal/toggleParticipationModal");
         } catch (_) {
